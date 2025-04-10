@@ -6,9 +6,8 @@ import edu.keyin.stephencrocker.repository.BSTDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BSTService {
@@ -57,5 +56,22 @@ public class BSTService {
 
     public BSTNode getRoot() {
         return root;
+    }
+
+    public List<Integer> parseNumbers(String numbersStr) throws NumberFormatException {
+        return Arrays.stream(numbersStr.split(","))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, Object> buildTree(List<Integer> numbers) {
+        clear();
+        numbers.forEach(this::insert);
+        return toJson(root);
+    }
+
+    public List<BSTData> getAllTreeRecords() {
+        return repository.findAll();
     }
 }
