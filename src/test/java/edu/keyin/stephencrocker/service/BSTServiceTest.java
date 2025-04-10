@@ -2,6 +2,7 @@ package edu.keyin.stephencrocker.service;
 
 import edu.keyin.stephencrocker.model.BSTData;
 import edu.keyin.stephencrocker.repository.BSTDataRepository;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
