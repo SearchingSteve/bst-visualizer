@@ -1,26 +1,35 @@
 package edu.keyin.stephencrocker.service;
 
 import edu.keyin.stephencrocker.model.BSTNode;
+import edu.keyin.stephencrocker.model.BSTData;
+import edu.keyin.stephencrocker.repository.BSTDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 
 @Service
 public class BSTService {
     private BSTNode root;
+    private final BSTDataRepository repository;  
 
-    public void insert(int value) {
-        root = bstInsertRecursive(root, value);
+    @Autowired
+    public BSTService(BSTDataRepository repository) {  
+        this.repository = repository;
     }
 
-    private BSTNode bstInsertRecursive(BSTNode node, int value) {
+    public void insert(int value) {
+        root = InsertRecursive(root, value);  
+    }
+
+    private BSTNode InsertRecursive(BSTNode node, int value) {
         if (node == null) return new BSTNode(value);
         if (value < node.getValue()) {
-            node.setLeft(bstInsertRecursive(node.getLeft(), value));
+            node.setLeft(InsertRecursive(node.getLeft(), value));
         } else if (value > node.getValue()) {
-            node.setRight(bstInsertRecursive(node.getRight(), value));
+            node.setRight(InsertRecursive(node.getRight(), value));
         }
         return node;
     }
@@ -36,5 +45,17 @@ public class BSTService {
 
     public void clear() {
         root = null;
+    }
+
+    public void saveTree(List<Integer> numbers, Map<String, Object> treeJson) {
+        BSTData data = new BSTData(
+                numbers.toString(),
+                treeJson.toString()
+        );
+        repository.save(data);
+    }
+
+    public BSTNode getRoot() {
+        return root;
     }
 }
